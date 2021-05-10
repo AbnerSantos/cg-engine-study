@@ -10,7 +10,7 @@ rwildcard = $(foreach d,$(wildcard $(1:=/*)),$(call rwildcard,$d,$2) $(filter $(
 .PHONY: default all clean
 
 default: $(TARGET)
-all: directories default
+all: default
 
 $(shell mkdir -p $(OBJDIR))
 SOURCES = $(call rwildcard,$(SRCDIR),*.cpp)

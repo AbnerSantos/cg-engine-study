@@ -162,10 +162,10 @@ int main(void)
     GameObject circle = GameObject();
     circle.AddShape(circleMesh);
 
-    GameObject triangle2 = GameObject();
+    GameObject triangle2 = GameObject(Vector2(-0.30f, 0.0f));
     triangle2.AddShape(triangleMesh);
 
-    GameObject square2 = GameObject();
+    GameObject square2 = GameObject(Vector2(+0.30f, 0.0f));
     square2.AddShape(squareMesh);
 
     GameObject triangle3 = GameObject();
@@ -295,9 +295,23 @@ int CircleTranslate(GLFWwindow* window, Renderer renderer, int startIndex, GameO
     return renderer.Draw(*gameObject, startIndex);
 }
 
+bool growing = true;
+
 int TwoObjects(GLFWwindow* window, Renderer renderer, int startIndex, GameObject* gameObject1, GameObject* gameObject2)
 {
-    gameObject1->scale = gameObject1->scale - Vector2(1.0f, 1.0f) * deltaTime;
+    if(growing)
+    {
+        gameObject1->scale = gameObject1->scale + Vector2(1.0f, 1.0f) * deltaTime;
+        if(gameObject1->scale.x > 1.5f)
+            growing = false;
+    }
+    else
+    {
+        gameObject1->scale = gameObject1->scale - Vector2(1.0f, 1.0f) * deltaTime;
+        if(gameObject1->scale.x < 0.5f)
+            growing = true;
+    }
+
     gameObject2->rotation += 30.0f * deltaTime;
 
     int index = renderer.Draw(*gameObject1, startIndex);
